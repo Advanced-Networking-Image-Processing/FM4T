@@ -1,0 +1,7 @@
+In this, the LDM 1.0 (including the autoencoder part) is trained with the autoencoder which is trained with sinogram data and then combined together.
+
+This model specifically caters to Sinogram input and Sinogram output.
+
+Please see the repo : https://github.com/CompVis/latent-diffusion and https://github.com/nickyisadog/latent-diffusion-inpainting
+
+The repo is under development phase.
