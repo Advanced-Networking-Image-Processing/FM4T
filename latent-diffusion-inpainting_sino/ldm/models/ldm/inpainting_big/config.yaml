@@ -69,11 +69,19 @@ model:
 data:
   target: main.DataModuleFromConfig
   params:
-    batch_size: 4
-    num_workers: 4
+    batch_size: 1
     wrap: true
     train:
-      target: "/homes/sruban/latent-diffusion-inpainting_sino_trial/sino_data/512x512/data"
+      target: ldm.ldm.data.PIL_data.InpaintingTrain_autoencoder 
+      #target: "/homes/sruban/latent-diffusion-inpainting_sino_trial/sino_data/512x512/data"
       params:
+        data_root: "sino_data/512x512/data/sino"
         size: 512
-        crop_size: 256
+        #crop_size: 256
+    validation:
+      target: ldm.ldm.data.PIL_data.InpaintingVal_autoencoder 
+      #target: "/homes/sruban/latent-diffusion-inpainting_sino_trial/sino_data/512x512/data"
+      params:
+        data_root: "sino_data/512x512/data/sino"
+        size: 512
+        #crop_size: 256
