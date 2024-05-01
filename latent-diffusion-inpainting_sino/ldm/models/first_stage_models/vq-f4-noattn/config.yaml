@@ -22,6 +22,7 @@ model:
       attn_resolutions: []
       dropout: 0.0
     lossconfig:
+      #target: taming.modules.losses.vqperceptual.VQLPIPSWithDiscriminatorSino
       target: taming.modules.losses.vqperceptual.VQLPIPSWithDiscriminator
       params:
         disc_conditional: false
@@ -33,12 +34,20 @@ model:
 data:
   target: main.DataModuleFromConfig
   params:
-    batch_size: 2
-    num_workers: 2
+    batch_size: 1
+    num_workers: 1
     wrap: true
     train:
-      #target: "Kvasir-SEG/images"
-      target: "sino_data/512x512/data"
+      target: ldm.ldm.data.PIL_data.InpaintingTrain_autoencoder
+      #target: "sino_data/512x512/data/sino"
       params:
+        data_root: "sino_data/512x512/data/sino"
         size: 512
-        crop_size: 256
+        #crop_size: 256
+    validation:
+      target: ldm.ldm.data.PIL_data.InpaintingVal_autoencoder
+      #target: "sino_data/512x512/data/sino"
+      params:
+        data_root: "sino_data/512x512/data/sino"
+        size: 512
+        #crop_size: 256
