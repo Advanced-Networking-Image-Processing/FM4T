@@ -151,7 +151,8 @@ class WrappedDataset(Dataset):
 
     def __len__(self):
         #return len(self.data)
-        ii = 200000
+        ii = 20
+        #ii = 200000
         return ii
 
     def __getitem__(self, idx):
@@ -266,6 +267,7 @@ class SetupCallback(Callback):
     def on_keyboard_interrupt(self, trainer, pl_module):
         if trainer.global_rank == 0:
             print("Summoning checkpoint.")
+            print('I am on_keyboard_interrupt function')
             ckpt_path = os.path.join(self.ckptdir, "last.ckpt")
             trainer.save_checkpoint(ckpt_path)
 
@@ -279,12 +281,12 @@ class SetupCallback(Callback):
             if "callbacks" in self.lightning_config:
                 if 'metrics_over_trainsteps_checkpoint' in self.lightning_config['callbacks']:
                     os.makedirs(os.path.join(self.ckptdir, 'trainstep_checkpoints'), exist_ok=True)
-            print("Project config")
+            print("Project config ... I am in on_pretrain_routine_start")
             print(OmegaConf.to_yaml(self.config))
             OmegaConf.save(self.config,
                            os.path.join(self.cfgdir, "{}-project.yaml".format(self.now)))
 
-            print("Lightning config")
+            print("Lightning config ... I am in on_pretain_routine_start too")
             print(OmegaConf.to_yaml(self.lightning_config))
             OmegaConf.save(OmegaConf.create({"lightning": self.lightning_config}),
                            os.path.join(self.cfgdir, "{}-lightning.yaml".format(self.now)))
@@ -350,6 +352,7 @@ class ImageLogger(Callback):
                 batch_idx)
             path = os.path.join(root, filename)
             os.makedirs(os.path.split(path)[0], exist_ok=True)
+            print('I am in log_local function')
             Image.fromarray(grid).save(path)
 
     def log_img(self, pl_module, batch, batch_idx, split="train"):
@@ -557,15 +560,10 @@ if __name__ == "__main__":
         trainer_opt = argparse.Namespace(**trainer_config)
         lightning_config.trainer = trainer_config
 
+        #print('in line #563 config.model', config.model)
+
         # model
-        #model_path = 'ldm/models/ldm/inpainting_big/retr_auto_old_diff/updated_ldm_ep25_u.ckpt'
-        #config.model['params']['ckpt_path'] = model_path
-        #print('config.model', config.model['params']['ckpt_path'])
-        
         model = instantiate_from_config(config.model)
-        #print('I am here after model instantiation')
-        #model.load_state_dict(torch.load(model_path)['state_dict'], strict=False)
-        #print('line #567 added here !!!')
 
         # trainer and callbacks
         trainer_kwargs = dict()
@@ -606,22 +604,29 @@ if __name__ == "__main__":
                 "filename": "{epoch:06}",
                 "verbose": True,
                 "save_last": True,
-            }
+            },
+            "CHECKPOINT_NAME_LAST": "{epoch}",
         }
         if hasattr(model, "monitor"):
             print(f"Monitoring {model.monitor} as checkpoint metric.")
             default_modelckpt_cfg["params"]["monitor"] = model.monitor
             default_modelckpt_cfg["params"]["every_n_epochs"] = 5
+            #default_modelckpt_cfg["params"]["checkpoint_name_last"] = "{epoch}"
             #default_modelckpt_cfg["params"]["save_top_k"] = 3
+            #print('default_modelckpt_cfg["params"]', default_modelckpt_cfg["params"])
 
         if "modelcheckpoint" in lightning_config:
             modelckpt_cfg = lightning_config.modelcheckpoint
         else:
             modelckpt_cfg =  OmegaConf.create()
+            
         modelckpt_cfg = OmegaConf.merge(default_modelckpt_cfg, modelckpt_cfg)
-        print(f"Merged modelckpt-cfg: \n{modelckpt_cfg}")
+        #print(f"Merged modelckpt-cfg: \n{modelckpt_cfg}")
+        #print('modelckpt_cfg', modelckpt_cfg)
+
         if version.parse(pl.__version__) < version.parse('1.4.0'):
             trainer_kwargs["checkpoint_callback"] = instantiate_from_config(modelckpt_cfg)
+            print('version < 1.4.0 .... trainer_kwargs["checkpoint_callback"]', trainer_kwargs["checkppoint_callback"])
 
         # add callback which sets up log directory
         default_callbacks_cfg = {
@@ -658,13 +663,18 @@ if __name__ == "__main__":
         }
         if version.parse(pl.__version__) >= version.parse('1.4.0'):
             default_callbacks_cfg.update({'checkpoint_callback': modelckpt_cfg})
-            #print('modelckpt_cfg', modelckpt_cfg)
-            
+            #default_callbacks_cfg.update({'checkpoint_call'})
+            print('version >= 1.4.0 .... default_callbacks_cfg', default_callbacks_cfg)
+        
 
         if "callbacks" in lightning_config:
             callbacks_cfg = lightning_config.callbacks
+            print('callbacks in lightning_config')
+            #print('callbacks_cfg', callbacks_cfg)
         else:
             callbacks_cfg = OmegaConf.create()
+            print('callbacks not in lightning_config')
+            #print('callbacks_cfg', callbacks_cfg)
 
         if 'metrics_over_trainsteps_checkpoint' in callbacks_cfg:
             print(
@@ -676,9 +686,9 @@ if __name__ == "__main__":
                          "dirpath": os.path.join(ckptdir, 'trainstep_checkpoints'),
                          "filename": "{epoch:06}-{step:09}",
                          "verbose": True,
-                         'every_n_epochs': 5,
                          #'save_top_k': -1,
                          #'every_n_train_steps': 10000,
+                         'every_n_epochs': 5,
                          'save_weights_only': True
                      }
                      }
@@ -695,42 +705,70 @@ if __name__ == "__main__":
 
         trainer = Trainer.from_argparse_args(trainer_opt, **trainer_kwargs)
         trainer.logdir = logdir  ###
-
+        print('trainer_kwargs["callbacks"]', trainer_kwargs["callbacks"])
         print('logdir', logdir)
+        print('trainer', trainer)
 
-        # data = instantiate_from_config(config.data)
+        data = instantiate_from_config(config.data)
         # # NOTE according to https://pytorch-lightning.readthedocs.io/en/latest/datamodules.html
         # # calling these ourselves should not be necessary but it is.
         # # lightning still takes care of proper multiprocessing though
-        # data.prepare_data()
-        # data.setup()
-        # print("#### Data #####")
-        # for k in data.datasets:
-        #     print(f"{k}, {data.datasets[k].__class__.__name__}, {len(data.datasets[k])}")
+        data.prepare_data()
+        data.setup()
+        print("#### Data #####")
+        for k in data.datasets:
+            print(f"{k}, {data.datasets[k].__class__.__name__}, {len(data.datasets[k])}")
+        
 
+        '''
         batch_size = config.data['params']['batch_size']
         img_size = config.data['params']['train']['params']['size']
         path=config.data['params']['train']['target'] 
-        print('batch_size', batch_size)
-        print('img_size', img_size)
-        print('path', path)
-        print('opt', opt)
-        
+        '''
 
+        #print('batch_size', batch_size)
+        #print('img_size', img_size)
+        #print('path', path)
+        #print('opt', opt)
+        
+        '''
         if opt.stage == str(0):
-            dataSet = PIL_data.InpaintingTrain_autoencoder(img_size,path)
+            train_dataSet = PIL_data.InpaintingTrain_autoencoder(img_size,path)
+            val_dataSet = PIL_data.InpaintingVal_autoencoder(img_size, path)
 
         if opt.stage == str(1):
-            dataSet = PIL_data.InpaintingTrain_ldm(img_size,path)
+            train_dataSet = PIL_data.InpaintingTrain_ldm(img_size,path)
+        
+        print('dataSet object', train_dataSet)
 
-        print('dataSet object', dataSet)
+        #print('train_dataSet["image"] shape', len(train_dataSet)) 
+        #print('train_dataSet["masked_image"] shape', len(train_dataSet['masked_image']))
+        #print('train_dataSet headers', len(train_dataSet['image']))
+
+        #print('val_dataSet["image"] shape', len(val_dataSet)) 
+        #print('val_dataSet["masked_image"] shape', val_dataSet["masked_image"].shape)
 
         data = DataLoader(
-                dataSet,
+                train_dataSet,
                 batch_size=batch_size,
                 shuffle=True,
                 num_workers=batch_size * 2,
         )
+
+        #print('data', data)
+        '''
+
+        '''
+        my trials
+        img, msk_img = next(iter(data))
+        print(img[0].shape)
+        print(msk_img[0].shape)
+        blabla
+        '''
+
+        #val_data = DataLoader(val_dataSet, batch_size=batch_size, shuffle=True, num_workers=batch_size * 2,)
+
+        #print('config', config)
 
         # configure learning rate
         bs, base_lr = config.data.params.batch_size, config.model.base_learning_rate
@@ -743,7 +781,9 @@ if __name__ == "__main__":
         else:
             accumulate_grad_batches = 1
         print(f"accumulate_grad_batches = {accumulate_grad_batches}")
+        
         lightning_config.trainer.accumulate_grad_batches = accumulate_grad_batches
+        
         if opt.scale_lr:
             model.learning_rate = accumulate_grad_batches * ngpu * bs * base_lr
             print(
@@ -754,15 +794,17 @@ if __name__ == "__main__":
             print("++++ NOT USING LR SCALING ++++")
             print(f"Setting learning rate to {model.learning_rate:.2e}")
 
-
+        print('trainer.global_rank', trainer.global_rank)
+        
         # allow checkpointing via USR1
         def melk(*args, **kwargs):
             # run all checkpoint hooks
             if trainer.global_rank == 0:
                 print("Summoning checkpoint.")
+                print("I am here in melk function!!!")
                 ckpt_path = os.path.join(ckptdir, "last.ckpt")
                 trainer.save_checkpoint(ckpt_path)
-
+        
 
         def divein(*args, **kwargs):
             if trainer.global_rank == 0:
@@ -779,8 +821,13 @@ if __name__ == "__main__":
         if opt.train:
             try:
                 print("training......")
+                print('I am doing the training in line #806 of main.py')
+                #print('model', model)
                 trainer.fit(model, data)
+                # The next line does not work
+                #trainer.fit(model, data, val_data)
             except Exception:
+                #print('current_epoch', current_epoch)
                 melk()
                 raise
         if not opt.no_test and not trainer.interrupted:
