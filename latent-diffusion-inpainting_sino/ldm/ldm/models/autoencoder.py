@@ -1,3 +1,9 @@
+import sys
+sys.path.append("/home/ejiaze/FM4T/latent-diffusion-inpainting_sino/ldm/ldm/modules/diffusionmodules")
+sys.path.append("/home/ejiaze/FM4T/latent-diffusion-inpainting_sino/ldm/ldm/modules/distributions")
+sys.path.append("/home/ejiaze/FM4T/latent-diffusion-inpainting_sino/ldm/ldm")
+sys.path.append("/home/ejiaze/FM4T/latent-diffusion-inpainting_sino/ldm/ldm/models")
+
 import torch
 import pytorch_lightning as pl
 import torch.nn.functional as F
@@ -5,10 +11,12 @@ from contextlib import contextmanager
 
 from taming.modules.vqvae.quantize import VectorQuantizer2 as VectorQuantizer
 
-from ldm.modules.diffusionmodules.model import Encoder, Decoder
-from ldm.modules.distributions.distributions import DiagonalGaussianDistribution
+from model import Encoder, Decoder
+from distributionsclass import DiagonalGaussianDistribution
 
-from ldm.util import instantiate_from_config
+from util import instantiate_from_config
+
+from ffc import FourierUnit
 
 
 class VQModel(pl.LightningModule):
@@ -34,12 +42,14 @@ class VQModel(pl.LightningModule):
         self.n_embed = n_embed
         self.image_key = image_key
         self.encoder = Encoder(**ddconfig)
+        self.ff_unit = FourierUnit(in_channels=ddconfig["in_channels"], out_channels=ddconfig["z_channels"])
         self.decoder = Decoder(**ddconfig)
         self.loss = instantiate_from_config(lossconfig)
         self.quantize = VectorQuantizer(n_embed, embed_dim, beta=0.25,
                                         remap=remap,
                                         sane_index_shape=sane_index_shape)
         self.quant_conv = torch.nn.Conv2d(ddconfig["z_channels"], embed_dim, 1)
+        self.spatial_and_frequency_conv = torch.nn.Conv2d(2*ddconfig["z_channels"], embed_dim, 1)
         self.post_quant_conv = torch.nn.Conv2d(embed_dim, ddconfig["z_channels"], 1)
         if colorize_nlabels is not None:
             assert type(colorize_nlabels)==int
@@ -95,7 +105,13 @@ class VQModel(pl.LightningModule):
 
     def encode(self, x):
         h = self.encoder(x)
-        h = self.quant_conv(h)
+        
+        h1 = self.quant_conv(h)
+        h2 = self.ff_unit(h)
+        
+        h = torch.cat((h1, h2), dim=1)
+        h = self.spatial_and_frequency_conv(h)
+        
         quant, emb_loss, info = self.quantize(h)
         return quant, emb_loss, info
 
@@ -266,7 +282,13 @@ class VQModelInterface(VQModel):
 
     def encode(self, x):
         h = self.encoder(x)
-        h = self.quant_conv(h)
+
+        h1 = self.quant_conv(h)
+        h2 = self.ff_unit(h)
+        
+        h = torch.cat((h1, h2), dim=1)
+        h = self.spatial_and_frequency_conv(h)
+
         return h
 
     def decode(self, h, force_not_quantize=False):
