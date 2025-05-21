@@ -29,7 +29,7 @@ def get_model(args):
 parser = argparse.ArgumentParser()
 parser.add_argument('--model_config', type=str)
 parser.add_argument('--ldm_config', default="/homes/sruban/latent-diffusion-inpainting_sino_trial/ldm/models/ldm/inpainting_big/config_rl_no_mask.yaml", type=str)
-parser.add_argument('--diffusion_config', default="/homes/sruban/latent-diffusion-inpainting_sino_trial/ldm_trained_AE_org_phy12_w_gan_Jan15_25/real_only/act_epchs_no_mask1/all_epchs/epoch=000205.ckpt", type=str)
+parser.add_argument('--diffusion_config', default="/homes/sruban/latent-diffusion-inpainting_sino_trial/LDM_Sinogram_uncond/epoch=000205.ckpt", type=str)
 parser.add_argument('--task_config', default="configs/tasks/super_resolution_config_512_4x.yaml", type=str)
 parser.add_argument('--gpu', type=int, default=0)
 parser.add_argument('--save_dir', type=str, default='./results_512/sinogram/six_samples_smc/super_res/4x')
