@@ -33,7 +33,7 @@ parser.add_argument('--diffusion_config', default="/homes/sruban/latent-diffusio
 parser.add_argument('--task_config', default="configs/tasks/inpainting_MW_config_512.yaml", type=str)
 parser.add_argument('--gpu', type=int, default=0)
 parser.add_argument('--save_dir', type=str, default='./results_512/sinogram/six_samples_smc/MW_trial')
-parser.add_argument('--ddim_steps', default=50, type=int)
+parser.add_argument('--ddim_steps', default=200, type=int)
 parser.add_argument('--ddim_eta', default=0.0, type=float)
 parser.add_argument('--n_samples_per_class', default=1, type=int)
 parser.add_argument('--ddim_scale', default=1.0, type=float)
