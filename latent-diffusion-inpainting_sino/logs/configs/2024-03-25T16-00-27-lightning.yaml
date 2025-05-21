@@ -1,5 +1,0 @@
-lightning:
-  trainer:
-    accelerator: ddp
-    gpus: 0,
-    resume_from_checkpoint: logs_20k/checkpoints/epoch_370.ckpt

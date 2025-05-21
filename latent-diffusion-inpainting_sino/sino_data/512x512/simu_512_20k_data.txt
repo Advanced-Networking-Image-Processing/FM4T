@@ -1,9 +1,0 @@
-Warning: dxfile module not found
-spefile module not found
-EdfFile module not found
-simu_512_20k.py:19: UserWarning: Could not fit any shapes to image, consider reducing the minimum dimension
-  image = skimage.draw.random_shapes(image_shape=(h, w), max_shapes=30, min_shapes=10, \
-simu_512_20k.py:19: UserWarning: Could not fit any shapes to image, consider reducing the minimum dimension
-  image = skimage.draw.random_shapes(image_shape=(h, w), max_shapes=30, min_shapes=10, \
-simu_512_20k.py:19: UserWarning: Could not fit any shapes to image, consider reducing the minimum dimension
-  image = skimage.draw.random_shapes(image_shape=(h, w), max_shapes=30, min_shapes=10, \
