@@ -15,5 +15,7 @@
        conda env create -f environment.yaml
        conda install -c conda-forge dxchange
 
-### 4) 
+### 4) For the reconstruction of the object from Sinogram :
+
+        CUDA_VISIBLE_DEVICES=0 python 
 
