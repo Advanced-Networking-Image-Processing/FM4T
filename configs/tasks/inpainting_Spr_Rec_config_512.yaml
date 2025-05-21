@@ -1,0 +1,22 @@
+conditioning:
+  main_sampler: resample
+  method: ps # Do not touch
+  params:
+    scale: 0.5
+
+data:
+  name: custom
+  #root: ./data/samples_sino_512/fifty_samples
+  root: ./data/samples_sino_512/six_samples/smc_tiffs
+
+measurement:
+  operator:
+    name: inpainting
+  mask_opt:
+    mask_type: sparse_acq
+    mask_len_range: !!python/tuple [2, 4, 8, 16, 20]
+    image_size: 512
+
+  noise:
+    name: gaussian
+    sigma: 0
