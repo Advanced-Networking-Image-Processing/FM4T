@@ -26,7 +26,7 @@ def get_model(args):
 parser = argparse.ArgumentParser()
 parser.add_argument('--model_config', type=str)
 parser.add_argument('--ldm_config', default="configs/latent-diffusion/ffhq-ldm-vq-4.yaml", type=str)
-parser.add_argument('--diffusion_config', default="models/ldm/resample_paper_org/model.ckpt", type=str)
+parser.add_argument('--diffusion_config', default="models/ldm_original/model.ckpt", type=str)
 parser.add_argument('--task_config', default="configs/tasks/CT_recon_config.yaml", type=str)
 parser.add_argument('--gpu', type=int, default=0)
 parser.add_argument('--save_dir', type=str, default='./results/trial_May1_25/CT_recon/sino_samples_256/trial_admm_match_sf')
