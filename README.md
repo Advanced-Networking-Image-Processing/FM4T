@@ -24,5 +24,5 @@
         (a) Missing Wedge: CUDA_VISIBLE_DEVICES=0 python sample_condition_sino_MW.py
         (b) Sparse Reconstruction:  CUDA_VISIBLE_DEVICES=0 python sample_condition_sino_Spr_Rec.py
         (c) Denoising:  CUDA_VISIBLE_DEVICES=0 python sample_condition_sino_denoise.py
-        (d) Super Resolution: CUDA_VISIBLE_DEVICES=0 python sample_condition_sino_super_res.py
+        (d) Super Resolution: CUDA_VISIBLE_DEVICES=0 python sample_condition_sino_super_res_2x.py
 
