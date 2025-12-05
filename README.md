@@ -18,7 +18,7 @@
 
 ### 4) For the Object reconstruction from Sinogram:
 
-        CUDA_VISIBLE_DEVICES=0 python sample_condition_CT_recons.py
+        CUDA_VISIBLE_DEVICES=0 python sample_condn_recon.py
 
 ### 5) For other downstream tasks in the Sinogram domain:     
         (a) Missing Wedge: CUDA_VISIBLE_DEVICES=0 python sample_condition_sino_MW.py
