@@ -8,7 +8,8 @@
      cd FM_CT_git
 
 ### 2) Download the trained Latent Diffusion Models from https://anl.box.com/s/k73c1i62alqpr0yk82baq1dwx4i2w5zd
-      The untrained model is in LDM_not_finetuned folder, while the trained model is in the LDM_Sinogram_uncond folder.
+      Use LDM_not_finetuned/model.ckpt as the model weights for all the downstream tasks.
+      Save this downloaded model in the path "models/ldm/model.ckpt"
 
 ### 3) Setup the environment. Install the dependencies :
 
