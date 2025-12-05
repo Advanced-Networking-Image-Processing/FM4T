@@ -1,5 +1,5 @@
 from ldm_inverse.condition_methods import get_conditioning_method
-from ldm.models.diffusion.ddim_admm_match_sf1_diff_phy_guid.gamma_var.p1e_4_pg20_gamma1e4 import DDIMSampler
+from ldm.models.diffusion.p1e_4_pg20_gamma1e4 import DDIMSampler
 from data.dataloader import get_dataset, get_dataloader
 from scripts.utils import clear_color, mask_generator
 import matplotlib.pyplot as plt
