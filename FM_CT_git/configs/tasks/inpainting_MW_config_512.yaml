@@ -6,7 +6,8 @@ conditioning:
 
 data:
   name: custom
-  root: ./data/samples_sino_512/six_samples/smc_tiffs
+  root: ./data/samples_psmc_512/final_ones_512
+  #root: ./data/samples_sino_512/six_samples/smc_tiffs
   #root: ./data/samples_sino_512/fifty_samples
   #root: ./data/samples_sino_512/six_samples/tiffs
   #root: ./data/samples/512x512/ 
