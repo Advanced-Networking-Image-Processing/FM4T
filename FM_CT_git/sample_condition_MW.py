@@ -28,7 +28,7 @@ def get_model(args):
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--model_config', type=str)
-parser.add_argument('--ldm_config', default="/homes/sruban/latent-diffusion-inpainting_sino_trial/ldm/models/ldm/inpainting_big/config_rl_no_mask.yaml", type=str)
+parser.add_argument('--ldm_config', default="configs/latent-diffusion/config_rl_no_mask.yaml", type=str)
 parser.add_argument('--diffusion_config', default="models/ldm/epoch=000205.ckpt", type=str)
 parser.add_argument('--task_config', default="configs/tasks/inpainting_MW_config_512.yaml", type=str)
 parser.add_argument('--gpu', type=int, default=0)
