@@ -1,5 +1,5 @@
 from ldm_inverse.condition_methods import get_conditioning_method
-from ldm.models.diffusion.ddim_admm_match_sf1_diff_phy_guid.ddim_git_admm_match_sf1_p1e_4_pg10_inv_prb_not_matched import DDIMSampler
+from ldm.models.diffusion.ddim_git_admm_match_sf1_p1e_4_pg10_inv_prb_not_matched import DDIMSampler
 from data.dataloader import get_dataset, get_dataloader
 from scripts.utils import clear_color, mask_generator
 import matplotlib.pyplot as plt
@@ -29,7 +29,7 @@ def get_model(args):
 parser = argparse.ArgumentParser()
 parser.add_argument('--model_config', type=str)
 parser.add_argument('--ldm_config', default="/homes/sruban/latent-diffusion-inpainting_sino_trial/ldm/models/ldm/inpainting_big/config_rl_no_mask.yaml", type=str)
-parser.add_argument('--diffusion_config', default="/homes/sruban/latent-diffusion-inpainting_sino_trial/ldm_trained_AE_org_phy12_w_gan_Jan15_25/real_only/act_epchs_no_mask1/checkpoints/epoch=000205.ckpt", type=str)
+parser.add_argument('--diffusion_config', default="models/ldm/epoch=000205.ckpt", type=str)
 parser.add_argument('--task_config', default="configs/tasks/inpainting_MW_config_512.yaml", type=str)
 parser.add_argument('--gpu', type=int, default=0)
 parser.add_argument('--save_dir', type=str, default='./results_512/sinogram/samples_psmc/p1e_4_pg10/LDM_fine_tuned_admm_not_matched/MW')
