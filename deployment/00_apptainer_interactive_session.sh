@@ -1,0 +1,1 @@
+qsub -I -A hp-ptycho -q debug -l select=1 -l walltime=01:00:00 -l filesystems=home:eagle:grand -l singularity_fakeroot=true
