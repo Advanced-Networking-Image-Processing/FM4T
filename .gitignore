@@ -10,4 +10,4 @@ wheels/
 .venv
 
 # Models
-models/
+*.ckpt
