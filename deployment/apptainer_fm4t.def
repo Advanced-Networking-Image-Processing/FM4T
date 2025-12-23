@@ -10,18 +10,13 @@ From: continuumio/miniconda3
         ca-certificates
 
     # Install uv (Python package manager)
+    export UV_INSTALL_DIR="/usr/bin"
     curl -LsSf https://astral.sh/uv/install.sh | sh
-    export PATH="/root/.local/bin/:$PATH"
 
-    pip install --upgrade pip
 
-git clone https://github.com/tekinbicer/FM4T.git
-cd FM4T
-git checkout FM_v2
-cd FM_CT_git
 
-#conda env create -f environment.yaml
-#conda init
-#conda activate LDM_Resample
-#conda install -c conda-forge dxchange
+    git clone https://github.com/Advanced-Networking-Image-Processing/FM4T.git
+    cd /FM4T
+    git checkout FM_v2
 
+    uv sync
