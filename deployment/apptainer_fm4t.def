@@ -10,10 +10,13 @@ From: continuumio/miniconda3
         ca-certificates
 
     # Install uv (Python package manager)
+    export UV_INSTALL_DIR="/usr/bin"
     curl -LsSf https://astral.sh/uv/install.sh | sh
-    #export PATH="/root/.local/bin/:$PATH"
 
 
-git clone https://github.com/Advanced-Networking-Image-Processing/FM4T.git
-cd /FM4T
-git checkout FM_v2
+
+    git clone https://github.com/Advanced-Networking-Image-Processing/FM4T.git
+    cd /FM4T
+    git checkout FM_v2
+
+    uv sync
