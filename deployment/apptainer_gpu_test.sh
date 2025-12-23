@@ -1,0 +1,1 @@
+apptainer exec --nv --fakeroot apptainer_tomocupy.sif python3 test_cuda.py

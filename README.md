@@ -1,8 +1,21 @@
-# FM4T: Foundation Models for Tomography
-This is the initial repository for our work. 
+# Foundation Model for Computed Tomography for several downstream tasks
 
-The trained model files are in this Box folder : https://anl.box.com/s/w9hdvmug71qydp3kwo14caytnyc57er2
+## Steps
+### 1) Clone the repository and checkout the branch FM_v2
 
-The ReadMe files are also provided.
+     git clone https://github.com/Advanced-Networking-Image-Processing/FM4T
+     git checkout FM_v2
 
-They are too big to be uploaded in Github, and has to be uploaded in Box.
+### 2) Download the trained Latent Diffusion Models from https://anl.box.com/s/k73c1i62alqpr0yk82baq1dwx4i2w5zd
+      Use LDM_not_finetuned/model.ckpt as the model weights for all the downstream tasks.
+      Save this downloaded model in the path "models/ldm/model.ckpt"
+
+### 3) Setup the environment, resolve dependencies, and run sample reconstruction script:
+      uv run python sample_condn_recon.py
+
+### 4) For other downstream tasks in the Sinogram domain:     
+        (a) Missing Wedge: uv run sample_condition_sino_MW.py
+        (b) Sparse Reconstruction: uv run sample_condition_sino_Spr_Rec.py
+        (c) Denoising: uv run sample_condition_sino_denoise.py
+        (d) Super Resolution: uv run sample_condition_sino_super_res_2x.py
+

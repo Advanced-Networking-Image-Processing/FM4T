@@ -1,0 +1,22 @@
+Bootstrap: docker
+From: continuumio/miniconda3
+
+%post
+    # Install system packages
+    apt-get update --fix-missing && apt-get install -y --no-install-recommends \
+        vim \
+        git \
+        curl \
+        ca-certificates
+
+    # Install uv (Python package manager)
+    export UV_INSTALL_DIR="/usr/bin"
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+
+
+
+    git clone https://github.com/Advanced-Networking-Image-Processing/FM4T.git
+    cd /FM4T
+    git checkout FM_v2
+
+    uv sync

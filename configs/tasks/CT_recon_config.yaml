@@ -1,0 +1,20 @@
+conditioning:
+  main_sampler: resample
+  method: ps # Do not touch
+  params:
+    scale: 0.5
+
+data:
+  name: custom
+  #root: ./data/samples_sino_256
+  root: ./data/samples_sino_256/samples_psmc/tiffs/final_ones
+
+measurement:
+  operator:
+    name: CT_recon
+    kernel_size: 0
+    intensity: 0
+  
+  noise: 
+    name: gaussian
+    sigma: 0

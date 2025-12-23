@@ -1,0 +1,26 @@
+[project]
+name = "fm4t"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "dxchange",
+    "einops>=0.8.1",
+    "h5py>=3.15.1",
+    "matplotlib>=3.10.8",
+    "numpy>=2.4.0",
+    "omegaconf>=2.3.0",
+    "pandas>=2.3.3",
+    "pytorch-lightning<2.0",
+    "pyyaml>=6.0.3",
+    "scikit-image>=0.26.0",
+    "taming-transformers-rom1504",
+    "torch>=2.9.1",
+    "torchvision>=0.24.1",
+    "tqdm>=4.67.1",
+]
+
+[tool.uv.sources]
+taming-transformers-rom1504 = { git = "https://github.com/tekinbicer/taming-transformers.git" }
+dxchange = { git = "https://github.com/data-exchange/dxchange.git" }
