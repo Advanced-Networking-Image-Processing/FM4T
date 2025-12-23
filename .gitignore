@@ -11,3 +11,6 @@ wheels/
 
 # Models
 *.ckpt
+
+# Virtual images
+*.sif
