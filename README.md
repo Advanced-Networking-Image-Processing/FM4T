@@ -11,7 +11,7 @@
       Save this downloaded model in the path "models/ldm/model.ckpt"
 
 ### 2 b)  Download the trained Latent Diffusion Models from https://anl.box.com/s/k73c1i62alqpr0yk82baq1dwx4i2w5zd
-      Use LDM_Sinogram_uncond/epoch=000205.ckpt as the model weights for all sinogram to object reconstruction downstream tasks.
+      Use LDM_Sinogram_uncond/epoch=000205.ckpt as the model weights for all other downstream tasks.
       Save this downloaded model in the path "models/ldm/epoch=000205.ckpt"
 
 ### 3) Setup the environment, resolve dependencies, and run sample reconstruction script:
